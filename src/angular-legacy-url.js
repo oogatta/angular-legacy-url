@@ -4,14 +4,14 @@ angular
   .factory('AngularLegacyUrl', ['$window', function AngularLegacyUrlFactory($window) {
     var getQueries = function (search) {
       return search
-        .replace(/(^\?)/,'')
+        .replace(/(^\?)/, '')
         .split('&')
-        .reduce(function(sum, item){
+        .reduce(function (sum, item) {
                   if ( item === '' ) {
                     return sum;
                   }
                   else {
-                    item         = item.split('=');
+                    item = item.split('=');
                     sum[item[0]] = item[1];
                     return sum;
                   }
@@ -24,20 +24,29 @@ angular
         .replace(/\/$/, '')
         .split('/')
         .filter(function (action) {
-          return ( action !== '' );
-        });
+                  return ( action !== '' );
+                });
     };
 
-    var toQuery = function (params) {
-      var str = '?';
-      Object.keys(params).forEach(function (key) {
-        str += key + '=' + encodeURIComponent(params[key]) + '&';
-      });
-      return str.slice(0, -1);
-    };
-
-    return function () {
+    return function AngularLegacyUrl() {
       this.actions = getActions($window.location.pathname);
       this.queries = getQueries($window.location.search);
+
+      this.toString = function () {
+        var pathname = '/';
+        if ( this.actions.length > 0 ) {
+          pathname += this.actions.join('/') + '/'
+        }
+
+        var search = '';
+        if ( Object.keys(this.queries).length > 0 ) {
+          var queries = this.queries;
+          search += '?' + Object.keys(queries).map(function (key) {
+              return key + '=' + encodeURIComponent(queries[key]);
+            }).join('&');
+        }
+
+        return pathname + search;
+      };
     };
   }]);

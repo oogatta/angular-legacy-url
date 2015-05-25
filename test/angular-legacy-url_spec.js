@@ -35,4 +35,25 @@ describe('angular-legacy-url', function () {
       }));
     });
   });
+
+  describe('toString', function () {
+    it('gets string', inject(function (AngularLegacyUrl) {
+      var angularLegacyUrl = new AngularLegacyUrl();
+      angularLegacyUrl.actions = ['bob', 'dylan', 'hard', 'rain'];
+      angularLegacyUrl.queries = {
+        warren: 'zevon',
+        jackson: 'browne'
+      };
+
+      expect(angularLegacyUrl.toString()).toEqual('/bob/dylan/hard/rain/?warren=zevon&jackson=browne');
+    }));
+
+    it('gets empty string', inject(function (AngularLegacyUrl) {
+      var angularLegacyUrl = new AngularLegacyUrl();
+      angularLegacyUrl.actions = [];
+      angularLegacyUrl.queries = {};
+
+      expect(angularLegacyUrl.toString()).toEqual('/');
+    }));
+  });
 });
