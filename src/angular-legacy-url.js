@@ -47,5 +47,9 @@ angular
 
         return pathname + search;
       };
+
+      this.set = function () {
+        $window.location.href = this.toString();
+      };
     };
   }]);

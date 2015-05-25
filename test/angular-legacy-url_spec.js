@@ -2,7 +2,7 @@ describe('angular-legacy-url', function () {
   var $window;
   beforeEach(module('angular-legacy-url'));
   beforeEach(module(function ($provide) {
-    $window = { location: { search: '', pathname: '' }};
+    $window = { location: { search: '', pathname: '', href: '' }};
     $provide.value('$window', $window);
   }));
 
@@ -54,6 +54,17 @@ describe('angular-legacy-url', function () {
       angularLegacyUrl.queries = {};
 
       expect(angularLegacyUrl.toString()).toEqual('/');
+    }));
+  });
+
+  describe('set', function () {
+    it('sets toStringed string to location.href', inject(function (AngularLegacyUrl) {
+      $window.location.pathname = '/warren/zevon/';
+      $window.location.search   = '?key=value&bob=dylan';
+      var angularLegacyUrl = new AngularLegacyUrl();
+
+      angularLegacyUrl.set();
+      expect($window.location.href).toEqual('/warren/zevon/?key=value&bob=dylan');
     }));
   });
 });
