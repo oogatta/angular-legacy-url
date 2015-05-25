@@ -1,6 +1,5 @@
 angular
   .module('angular-legacy-url', [])
-  .value('unko', 'hoge')
   .factory('AngularLegacyUrl', ['$window', function AngularLegacyUrlFactory($window) {
     var getQueries = function (search) {
       return search
